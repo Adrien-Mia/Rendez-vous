@@ -2,7 +2,10 @@ const fs = require('fs');
 const path = require('path');
 const { slots } = require('./slots');
 
-const DB_PATH = path.join(__dirname, 'bookings.json');
+// DATA_DIR permet de pointer vers un disque persistant monté par
+// l'hébergeur (ex. Render) plutôt que vers le dossier du code source.
+const DATA_DIR = process.env.DATA_DIR || __dirname;
+const DB_PATH = path.join(DATA_DIR, 'bookings.json');
 
 function loadBookings() {
   try {
