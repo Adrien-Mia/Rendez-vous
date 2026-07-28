@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Réservation confirmée</title>
+  <link rel="stylesheet" href="/public/style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <div class="confirmation">
+      <div class="check">✅</div>
+      <h1>Rendez-vous confirmé</h1>
+      <p>
+        <strong><%= slot.dateLabel %></strong><br />
+        de <%= slot.timeLabel %> à <%= slot.endLabel %>
+      </p>
+      <p>
+        Commune : <strong><%= commune %></strong><br />
+        Contact : <%= contact %> — <%= email %> — <%= telephone %>
+      </p>
+      <p class="subtitle">Un rappel vous sera envoyé si nécessaire. Merci !</p>
+      <p><a href="/">← Retour au calendrier</a></p>
+    </div>
+  </div>
+</body>
+</html>

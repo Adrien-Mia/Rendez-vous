@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prise de rendez-vous - Communes</title>
+  <link rel="stylesheet" href="/public/style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="page-header">
+      <h1>Prise de rendez-vous</h1>
+      <p class="subtitle">
+        Merci de choisir un créneau ci-dessous (durée <%= duration %> minutes). Une fois réservé,
+        le créneau n'est plus disponible pour les autres communes.
+      </p>
+    </header>
+
+    <% if (error === 'taken') { %>
+      <div class="banner error">Ce créneau vient d'être réservé par quelqu'un d'autre. Merci d'en choisir un autre.</div>
+    <% } else if (error === 'missing') { %>
+      <div class="banner error">Merci de remplir tous les champs du formulaire.</div>
+    <% } else if (error === 'unknown') { %>
+      <div class="banner error">Une erreur est survenue, merci de réessayer.</div>
+    <% } %>
+
+    <% grouped.forEach(function(day) { %>
+      <section class="day">
+        <h2><%= day.dateLabel %></h2>
+        <div class="slots">
+          <% day.slots.forEach(function(slot) { %>
+            <% if (slot.booking) { %>
+              <span class="slot-taken"><%= slot.timeLabel %> - réservé</span>
+            <% } else { %>
+              <button type="button" class="slot-btn" onclick="openDialog('<%= slot.id %>')">
+                <%= slot.timeLabel %> - <%= slot.endLabel %>
+              </button>
+              <dialog id="dialog-<%= slot.id %>">
+                <div class="dialog-inner">
+                  <h3><%= day.dateLabel %>, <%= slot.timeLabel %> - <%= slot.endLabel %></h3>
+                  <form class="booking-form" method="POST" action="/reserver/<%= slot.id %>">
+                    <label for="commune-<%= slot.id %>">Nom de la commune</label>
+                    <input id="commune-<%= slot.id %>" name="commune" type="text" required />
+
+                    <label for="contact-<%= slot.id %>">Nom du contact</label>
+                    <input id="contact-<%= slot.id %>" name="contact" type="text" required />
+
+                    <label for="email-<%= slot.id %>">Email</label>
+                    <input id="email-<%= slot.id %>" name="email" type="email" required />
+
+                    <label for="telephone-<%= slot.id %>">Téléphone</label>
+                    <input id="telephone-<%= slot.id %>" name="telephone" type="tel" required />
+
+                    <div class="actions">
+                      <button type="submit" class="primary">Confirmer la réservation</button>
+                      <button type="button" class="ghost" onclick="closeDialog('<%= slot.id %>')">Annuler</button>
+                    </div>
+                  </form>
+                </div>
+              </dialog>
+            <% } %>
+          <% }); %>
+        </div>
+      </section>
+    <% }); %>
+  </div>
+
+  <script>
+    function openDialog(id) {
+      document.getElementById('dialog-' + id).showModal();
+    }
+    function closeDialog(id) {
+      document.getElementById('dialog-' + id).close();
+    }
+  </script>
+</body>
+</html>

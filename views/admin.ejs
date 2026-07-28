@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin - Réservations</title>
+  <link rel="stylesheet" href="/public/style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="page-header">
+      <h1>Suivi des réservations</h1>
+      <p class="subtitle">Vue réservée à l'organisateur.</p>
+    </header>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Créneau</th>
+          <th>Statut</th>
+          <th>Commune</th>
+          <th>Contact</th>
+          <th>Email</th>
+          <th>Téléphone</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% grouped.forEach(function(day) { %>
+          <% day.slots.forEach(function(slot) { %>
+            <tr>
+              <td><%= day.dateLabel %></td>
+              <td><%= slot.timeLabel %> - <%= slot.endLabel %></td>
+              <% if (slot.booking) { %>
+                <td class="tag-taken">Réservé</td>
+                <td><%= slot.booking.commune %></td>
+                <td><%= slot.booking.contact %></td>
+                <td><%= slot.booking.email %></td>
+                <td><%= slot.booking.telephone %></td>
+              <% } else { %>
+                <td class="tag-free">Libre</td>
+                <td colspan="4"></td>
+              <% } %>
+            </tr>
+          <% }); %>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
